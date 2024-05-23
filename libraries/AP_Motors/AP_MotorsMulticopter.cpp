@@ -18,8 +18,8 @@
 #include <AP_BattMonitor/AP_BattMonitor.h>
 #include <SRV_Channel/SRV_Channel.h>
 #include <AP_Logger/AP_Logger.h>
-
 #include <AP_Vehicle/AP_Vehicle_Type.h>
+#include <stdio.h>
 #if APM_BUILD_TYPE(APM_BUILD_ArduPlane)
     #define AP_MOTORS_PARAM_PREFIX "Q_M_"
 #else
@@ -244,9 +244,24 @@ void AP_MotorsMulticopter::output()
 
     // run spool logic
     output_logic();
-
+    if(is_Ground_Rolling)
+    {   
+        // if(take_fly==true)
+        // {
+        //     //printf("takeoff\n");
+            //output_armed_stabilizing();
+        // }
+        //else
+        //{
+            printf("without thr input\n");
+            output_armed_stabilizing_Eric();
+        //}
+    }
     // calculate thrust
-    output_armed_stabilizing();
+    if(!is_Ground_Rolling)
+    {
+        output_armed_stabilizing();
+    }
 
     // apply any thrust compensation for the frame
     thrust_compensation();
@@ -311,6 +326,7 @@ void AP_MotorsMulticopter::update_throttle_filter()
 
     if (armed()) {
         _throttle_filter.apply(_throttle_in, _dt);
+        //printf("thtottle in set %f\n",_throttle_in);
         // constrain filtered throttle
         if (_throttle_filter.get() < 0.0f) {
             _throttle_filter.reset(0.0f);

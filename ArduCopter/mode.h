@@ -4,7 +4,7 @@
 #include <AP_Math/chirp.h>
 class Parameters;
 class ParametersG2;
-
+class EricCopter_Parameter;
 class GCS_Copter;
 
 class Mode {
@@ -39,7 +39,7 @@ public:
         AUTOROTATE =   26,  // Autonomous autorotation
         AUTO_RTL =     27,  // Auto RTL, this is not a true mode, AUTO will report as this mode if entered to perform a DO_LAND_START Landing sequence
         TURTLE =       28,  // Flip over after crash
-
+        PENDULUM=      29,  //The mode by Eric
         // Mode number 127 reserved for the "drone show mode" in the Skybrush
         // fork at https://github.com/skybrush-io/ardupilot
     };
@@ -173,6 +173,7 @@ protected:
     // convenience references to avoid code churn in conversion:
     Parameters &g;
     ParametersG2 &g2;
+    EricCopter_Parameter &Eric;
     AC_WPNav *&wp_nav;
     AC_Loiter *&loiter_nav;
     AC_PosControl *&pos_control;
@@ -1487,6 +1488,72 @@ private:
 
 };
 
+class ModePendulum : public Mode {
+
+public:
+    // inherit constructor
+    using Mode::Mode;
+    Number mode_number() const override { return Number::PENDULUM; }
+    bool init(bool ignore_checks) override;
+    virtual void run() override;
+    void exit() override;
+    bool requires_GPS() const override { return true; }
+    bool has_manual_throttle() const override { 
+        if(manual_thr)
+            {return true;} 
+        else
+            {return false;} 
+        }
+    // allow arming
+    bool allows_arming(AP_Arming::Method method) const override { return true; };
+    //bool has_user_takeoff(bool must_navigate) const override { return true; }
+    bool is_autopilot() const override { return false; }
+    bool allows_save_trim() const override { return true; }
+    bool allows_autotune() const override { return true; }
+    bool allows_flip() const override { return true; }
+    bool manual_thr=false;
+    int16_t Count_Takeoff_End=0;
+protected:
+
+    const char *name() const override { return "PENDULUM"; }
+    const char *name4() const override { return "PEND"; }
+
+private:
+    bool Use_GPS_Pos_Ctrl=true;
+    bool Allow_Pitch_Roll_Ctrl=false;
+    void Read_Cur_PID_Param();
+    void Descent();
+    void Vertical_Ctrl();
+    void Vertical_Ctrl_v2();
+    void Ground_Rolling();
+    void Horizontal_Ctrl();
+    bool LD_Detector();
+    //type:0-> original 1->ground 
+    void Param_Change(int type);
+    
+    int Count_Land_End=0;
+    //wait time to say if landed,0.5s 400hz
+    bool Descented=false;
+    
+    float P_Ang_P;
+    float P_Ang_R;
+
+    float P_Rate_P;
+    float I_Rate_P;
+    float D_Rate_P;
+
+    float P_Rate_R;
+    float I_Rate_R;
+    float D_Rate_R;
+
+    float P_Rate_Y;
+    float I_Rate_Y;
+    float D_Rate_Y;
+
+    bool first_loop;
+    float Thr_Min=0.1;
+    //float Land_Speed=float(Eric.ERIC_LD_SPEED);
+};
 
 class ModeStabilize : public Mode {
 

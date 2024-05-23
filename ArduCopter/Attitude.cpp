@@ -76,6 +76,7 @@ float Copter::get_pilot_desired_climb_rate(float throttle_control)
     throttle_control = constrain_float(throttle_control,0.0f,1000.0f);
 
     // ensure a reasonable deadzone
+    // dead zone = 100 in default
     g.throttle_deadzone.set(constrain_int16(g.throttle_deadzone, 0, 400));
 
     float desired_rate = 0.0f;

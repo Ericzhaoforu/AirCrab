@@ -164,7 +164,7 @@ void Thrust_Linearization::update_lift_max_from_batt_voltage()
 
     // constrain resting voltage estimate (resting voltage is actual voltage with sag removed based on current draw and resistance)
     _batt_voltage = constrain_float(_batt_voltage, batt_voltage_min, batt_voltage_max);
-
+    //normalize to [0,1]
     if (!motors.has_option(AP_Motors::MotorOptions::BATT_RAW_VOLTAGE)) {
         // filter at 0.5 Hz
         batt_voltage_filt.apply(_batt_voltage / batt_voltage_max, motors.get_dt());

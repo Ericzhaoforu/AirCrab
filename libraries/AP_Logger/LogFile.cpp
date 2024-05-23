@@ -193,10 +193,10 @@ void AP_Logger::Write_RCOUT(void)
         const struct log_RCOUT pkt{
             LOG_PACKET_HEADER_INIT(LOG_RCOUT_MSG),
             time_us       : AP_HAL::micros64(),
-            chan1         : channels[0],
-            chan2         : channels[1],
-            chan3         : channels[2],
-            chan4         : channels[3],
+            chan1         : (float)(channels[0]-1000)/1000,
+            chan2         : (float)(channels[1]-1000)/1000,
+            chan3         : (float)(channels[2]-1000)/1000,
+            chan4         : (float)(channels[3]-1000)/1000,
             chan5         : channels[4],
             chan6         : channels[5],
             chan7         : channels[6],
@@ -230,10 +230,10 @@ void AP_Logger::Write_RCOUT(void)
         const struct log_RCOUT pkt3{
             LOG_PACKET_HEADER_INIT(LOG_RCOUT3_MSG),
             time_us       : AP_HAL::micros64(),
-            chan1         : hal.rcout->read(18),
-            chan2         : hal.rcout->read(19),
-            chan3         : hal.rcout->read(20),
-            chan4         : hal.rcout->read(21),
+            chan1         : (float)hal.rcout->read(18),
+            chan2         : (float)hal.rcout->read(19),
+            chan3         : (float)hal.rcout->read(20),
+            chan4         : (float)hal.rcout->read(21),
             chan5         : hal.rcout->read(22),
             chan6         : hal.rcout->read(23),
             chan7         : hal.rcout->read(24),
@@ -488,7 +488,10 @@ void AP_Logger::Write_PID(uint8_t msg_type, const AP_PIDInfo &info)
         FF              : info.FF,
         Dmod            : info.Dmod,
         slew_rate       : info.slew_rate,
-        limit           : info.limit
+        limit           : info.limit,
+        FFec            : info.ffec,
+        DGEN            : info.dgen,
+        ffex_en            : info.ffex_en,
     };
     WriteBlock(&pkt, sizeof(pkt));
 }

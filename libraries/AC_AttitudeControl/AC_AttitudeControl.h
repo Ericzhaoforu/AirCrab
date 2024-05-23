@@ -90,7 +90,17 @@ public:
     // get the roll acceleration limit in centidegrees/s/s or radians/s/s
     float get_accel_roll_max_cdss() const { return _accel_roll_max; }
     float get_accel_roll_max_radss() const { return radians(_accel_roll_max * 0.01f); }
+    //user param
+    float ec_get_accel_roll_max_cdss() const{return _ec_ac_r_max;}
+    float ec_get_accel_roll_max_radss() const{return radians(_ec_ac_r_max*0.01f); }
 
+    float ec_get_accel_pitch_max_cdss() const{return _ec_ac_p_max;}
+    float ec_get_accel_pitch_max_radss() const{return radians(_ec_ac_p_max*0.01f); }
+
+    float ec_get_accel_yaw_max_cdss() const{return _ec_ac_y_max;}
+    float ec_get_accel_yaw_max_radss() const{return radians(_ec_ac_y_max*0.01f); }
+    bool Grouding = 0;
+    bool err_flag = false;
     // Sets the roll acceleration limit in centidegrees/s/s
     void set_accel_roll_max_cdss(float accel_roll_max) { _accel_roll_max.set(accel_roll_max); }
 
@@ -430,7 +440,9 @@ protected:
     AP_Float            _ang_vel_roll_max;
     AP_Float            _ang_vel_pitch_max;
     AP_Float            _ang_vel_yaw_max;
-
+    AP_Float _ec_ac_p_max;
+    AP_Float _ec_ac_r_max;
+    AP_Float _ec_ac_y_max;
     // Maximum rotation acceleration for earth-frame roll axis
     AP_Float            _accel_roll_max;
 

@@ -129,13 +129,16 @@ void ModeLoiter::run()
         pos_control->relax_z_controller(0.0f);   // forces throttle output to decay to zero
         loiter_nav->init_target();
         attitude_control->input_thrust_vector_rate_heading(loiter_nav->get_thrust_vector(), target_yaw_rate, false);
+        copter.loiterstate = 0;
         break;
 
     case AltHold_Landed_Ground_Idle:
         attitude_control->reset_yaw_target_and_rate();
+        copter.loiterstate = 2;
         FALLTHROUGH;
 
     case AltHold_Landed_Pre_Takeoff:
+        copter.loiterstate = 3;
         attitude_control->reset_rate_controller_I_terms_smoothly();
         loiter_nav->init_target();
         attitude_control->input_thrust_vector_rate_heading(loiter_nav->get_thrust_vector(), target_yaw_rate, false);
@@ -144,6 +147,7 @@ void ModeLoiter::run()
 
     case AltHold_Takeoff:
         // initiate take-off
+        copter.loiterstate = 1;
         if (!takeoff.running()) {
             takeoff.start(constrain_float(g.pilot_takeoff_alt,0.0f,1000.0f));
         }
@@ -163,6 +167,7 @@ void ModeLoiter::run()
 
     case AltHold_Flying:
         // set motors to full range
+        copter.loiterstate = 4;
         motors->set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);
 
 #if AC_PRECLAND_ENABLED

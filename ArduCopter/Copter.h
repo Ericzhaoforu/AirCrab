@@ -200,6 +200,8 @@ public:
     friend class AutoTune;
 
     friend class Mode;
+    friend class ModePendulum;
+    friend class EricCopter_Parameter;
     friend class ModeAcro;
     friend class ModeAcro_Heli;
     friend class ModeAltHold;
@@ -230,14 +232,15 @@ public:
     Copter(void);
 
 private:
-
+    float motor_state=0;
     // key aircraft parameters passed to multiple libraries
     AP_MultiCopter aparm;
-
+    int is_first_usr_log =1;
+    int8_t loiterstate = 0;
     // Global parameters are all contained within the 'g' class.
     Parameters g;
     ParametersG2 g2;
-
+    EricCopter_Parameter Eric;
     // used to detect MAVLink acks from GCS to stop compassmot
     uint8_t command_ack_counter;
 
@@ -836,6 +839,7 @@ private:
     void Log_Write_Data(LogDataID id, float value);
     void Log_Write_Parameter_Tuning(uint8_t param, float tuning_val, float tune_min, float tune_max);
     void Log_Video_Stabilisation();
+    void Log_User_Variable();
 #if FRAME_CONFIG == HELI_FRAME
     void Log_Write_Heli(void);
 #endif
@@ -952,6 +956,10 @@ private:
     void userhook_auxSwitch2(const RC_Channel::AuxSwitchPos ch_flag);
     void userhook_auxSwitch3(const RC_Channel::AuxSwitchPos ch_flag);
 
+    void Velocity_Cmd_Send(AP_HAL::UARTDriver *uart, const char *name, short int Vel);
+    short int velo_map(uint16_t v,int sacle);
+
+    void LogMotorSpinningState();
 #if MODE_ACRO_ENABLED == ENABLED
 #if FRAME_CONFIG == HELI_FRAME
     ModeAcro_Heli mode_acro;
@@ -971,6 +979,9 @@ private:
 #endif
 #if MODE_CIRCLE_ENABLED == ENABLED
     ModeCircle mode_circle;
+#endif
+#if MODE_PENDULUM_ENABLED == ENABLED
+    ModePendulum mode_pendulum;
 #endif
 #if MODE_DRIFT_ENABLED == ENABLED
     ModeDrift mode_drift;

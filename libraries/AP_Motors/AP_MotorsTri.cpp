@@ -329,7 +329,10 @@ void AP_MotorsTri::thrust_compensation(void)
         _thrust_rear = thrust[3];
     }
 }
-
+void  AP_MotorsTri::output_armed_stabilizing_Eric()
+{
+    output_armed_stabilizing();
+}
 /*
   override tricopter tail servo output in output_motor_mask
  */

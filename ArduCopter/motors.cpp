@@ -6,7 +6,7 @@
 #define LOST_VEHICLE_DELAY      10  // called at 10hz so 1 second
 
 static uint32_t auto_disarm_begin;
-
+//const AP_HAL::HAL& hal = AP_HAL::get_HAL();
 // arm_motors_check - checks for pilot input to arm or disarm the copter
 // called at 10hz
 void Copter::arm_motors_check()
@@ -152,6 +152,17 @@ void Copter::motors_output()
         ap.in_arming_delay = false;
     }
 
+    //get input of RC_6
+    int input_rc_wheel=6;
+    //for channge dection
+    //read
+    uint16_t value = hal.rcin->read(input_rc_wheel-1);
+    //printf("The value of rc 6: %04u",value);
+    // apply PWM min and MAX to throttle left and right, just as via AP_Motors
+    uint16_t throttle_pwm = value;
+    // motors->get_pwm_output_min() + (motors->get_pwm_output_max() - motors->get_pwm_output_min()) * 0;
+    SRV_Channels::set_output_pwm(SRV_Channel::k_motor5, throttle_pwm);
+    
     // output any servo channels
     SRV_Channels::calc_pwm();
 
@@ -178,7 +189,6 @@ void Copter::motors_output()
         // send output signals to motors
         flightmode->output_to_motors();
     }
-
     // push all channels
     SRV_Channels::push();
 }

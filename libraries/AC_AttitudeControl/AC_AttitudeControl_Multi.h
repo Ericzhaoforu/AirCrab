@@ -38,6 +38,18 @@
  # define AC_ATC_MULTI_RATE_YAW_FILT_HZ     2.5f
 #endif
 
+#ifndef AC_ATC_MULTI_RATE_YAW_FF
+ # define AC_ATC_MULTI_RATE_YAW_FF 0.0f
+#endif
+
+#ifndef AC_ATC_MULTI_RATE_PIT_FF
+ # define AC_ATC_MULTI_RATE_PIT_FF 0.0f
+#endif
+
+#ifndef AC_ATC_MULTI_RATE_RLL_FF
+ # define AC_ATC_MULTI_RATE_RLL_FF 0.0f
+#endif
+
 
 class AC_AttitudeControl_Multi : public AC_AttitudeControl {
 public:
@@ -50,7 +62,7 @@ public:
     AC_PID& get_rate_roll_pid() override { return _pid_rate_roll; }
     AC_PID& get_rate_pitch_pid() override { return _pid_rate_pitch; }
     AC_PID& get_rate_yaw_pid() override { return _pid_rate_yaw; }
-
+    AP_Float &pit_ff_range() {return _pit_ff_range;}
     // Update Alt_Hold angle maximum
     void update_althold_lean_angle_max(float throttle_in) override;
 
@@ -103,4 +115,6 @@ protected:
 
     // angle_p/pd boost multiplier
     AP_Float              _throttle_gain_boost;
+    //pitch axis dynamic ff range
+    AP_Float              _pit_ff_range;
 };

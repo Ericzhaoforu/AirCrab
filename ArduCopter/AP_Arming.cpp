@@ -1,5 +1,5 @@
 #include "Copter.h"
-
+#include <stdio.h>
 #pragma GCC diagnostic push
 #if defined(__clang__)
 #pragma GCC diagnostic ignored "-Wbitwise-instead-of-logical"
@@ -748,7 +748,7 @@ bool AP_Arming_Copter::arm(const AP_Arming::Method method, const bool do_arming_
     // turn off sprayer's test if on
     copter.sprayer.test_pump(false);
 #endif
-
+    //debug to see if run there
     // output lowest possible value to motors
     copter.motors->output_min();
 

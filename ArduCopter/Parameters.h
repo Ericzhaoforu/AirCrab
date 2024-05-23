@@ -384,6 +384,8 @@ public:
 
         k_param_vehicle = 257, // vehicle common block of parameters
 
+        //Param for EricCopter
+        k_param_Eric,
         // the k_param_* space is 9-bits in size
         // 511: reserved
     };
@@ -696,3 +698,43 @@ public:
 };
 
 extern const AP_Param::Info        var_info[];
+
+
+//Self define param especially for EricCopter, containing the ground rolling PID, D_l, D_h & fround rolling throttle
+
+class EricCopter_Parameter
+{
+    public:
+    EricCopter_Parameter(void){
+        //empty initialize function
+        AP_Param::setup_object_defaults(this, var_info);
+    };
+    // var_info for holding Parameter information
+    static const struct AP_Param::GroupInfo var_info[];
+    AP_Int16 ERIC_D_L;
+    AP_Int16 ERIC_D_H;
+    AP_Int16 ERIC_D_TAKEOFF;
+
+    AP_Float ERIC_G_THR;
+    AP_Float ERIC_TO_THR;
+    AP_Float ERIC_LD_SPEED;
+
+    AP_Float ERIC_PIT_ANG_P; //12
+    AP_Float ERIC_ROL_ANG_P; //12    
+
+    AP_Float ERIC_PIT_RAT_P;  
+    AP_Float ERIC_PIT_RAT_I;
+    AP_Float ERIC_PIT_RAT_D;
+
+    AP_Float ERIC_ROL_RAT_P;
+    AP_Float ERIC_ROL_RAT_I;
+    AP_Float ERIC_ROL_RAT_D;
+
+    AP_Float ERIC_YAW_RAT_P;
+    AP_Float ERIC_YAW_RAT_I;
+    AP_Float ERIC_YAW_RAT_D;
+
+    AP_Int16 ERIC_LD_W_T;
+    AP_Int16 ERIC_TO_W_T;
+
+};

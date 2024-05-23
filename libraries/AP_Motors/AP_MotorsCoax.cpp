@@ -113,7 +113,10 @@ uint32_t AP_MotorsCoax::get_motor_mask()
 
     return mask;
 }
-
+void AP_MotorsCoax::output_armed_stabilizing_Eric()
+{
+    output_armed_stabilizing();
+}
 // sends commands to the motors
 void AP_MotorsCoax::output_armed_stabilizing()
 {

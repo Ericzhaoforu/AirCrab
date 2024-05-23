@@ -273,10 +273,10 @@ struct PACKED log_RCIN2 {
 struct PACKED log_RCOUT {
     LOG_PACKET_HEADER;
     uint64_t time_us;
-    uint16_t chan1;
-    uint16_t chan2;
-    uint16_t chan3;
-    uint16_t chan4;
+    float chan1;
+    float chan2;
+    float chan3;
+    float chan4;
     uint16_t chan5;
     uint16_t chan6;
     uint16_t chan7;
@@ -407,6 +407,9 @@ struct PACKED log_PID {
     float   Dmod;
     float   slew_rate;
     uint8_t limit;
+    float  FFec;
+    bool  DGEN;
+    bool ffex_en;
 };
 
 struct PACKED log_WheelEncoder {
@@ -675,10 +678,10 @@ struct PACKED log_VER {
 // UNIT messages define units which can be referenced by FMTU messages
 // FMTU messages associate types (e.g. centimeters/second/second) to FMT message fields
 
-#define PID_LABELS "TimeUS,Tar,Act,Err,P,I,D,FF,Dmod,SRate,Limit"
-#define PID_FMT    "QfffffffffB"
-#define PID_UNITS  "s----------"
-#define PID_MULTS  "F----------"
+#define PID_LABELS "TimeUS,Tar,Act,Err,P,I,D,FF,Dmod,SRate,Limit,ffec,dgen,exen"
+#define PID_FMT    "QfffffffffBfBB"
+#define PID_UNITS  "s-------------"
+#define PID_MULTS  "F-------------"
 
 #define PIDx_FMT "Qffffffff"
 #define PIDx_UNITS "smmnnnooo"
@@ -1207,11 +1210,11 @@ LOG_STRUCTURE_FROM_GPS \
     { LOG_RCIN2_MSG, sizeof(log_RCIN2), \
       "RCI2",  "QHHH",     "TimeUS,C15,C16,OMask", "sYY-", "F---", true }, \
     { LOG_RCOUT_MSG, sizeof(log_RCOUT), \
-      "RCOU",  "QHHHHHHHHHHHHHH",     "TimeUS,C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11,C12,C13,C14", "sYYYYYYYYYYYYYY", "F--------------", true  }, \
+      "RCOU",  "QffffHHHHHHHHHH",     "TimeUS,C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11,C12,C13,C14", "s----YYYYYYYYYY", "F--------------", true  }, \
     { LOG_RCOUT2_MSG, sizeof(log_RCOUT2), \
       "RCO2",  "QHHHH",     "TimeUS,C15,C16,C17,C18", "sYYYY", "F----", true  }, \
     { LOG_RCOUT3_MSG, sizeof(log_RCOUT), \
-      "RCO3",  "QHHHHHHHHHHHHHH",     "TimeUS,C19,C20,C21,C22,C23,C24,C25,C26,C27,C28,C29,C30,C31,C32", "sYYYYYYYYYYYYYY", "F--------------", true  }, \
+      "RCO3",  "QffffHHHHHHHHHH",     "TimeUS,C19,C20,C21,C22,C23,C24,C25,C26,C27,C28,C29,C30,C31,C32", "s----YYYYYYYYYY", "F--------------", true  }, \
     { LOG_RSSI_MSG, sizeof(log_RSSI), \
       "RSSI",  "Qff",     "TimeUS,RXRSSI,RXLQ", "s--", "F--", true  }, \
 LOG_STRUCTURE_FROM_BARO \

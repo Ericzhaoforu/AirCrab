@@ -17,4 +17,7 @@ struct AP_PIDInfo {
     float Dmod;
     float slew_rate;
     bool  limit;
+    float ffec;
+    bool dgen;
+    bool ffex_en;
 };

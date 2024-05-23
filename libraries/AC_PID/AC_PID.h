@@ -75,6 +75,13 @@ public:
     AP_Float &kI() { return _ki; }
     AP_Float &kD() { return _kd; }
     AP_Float &kIMAX() { return _kimax; }
+    AP_Float &ffec() {return _ffec;}
+    AP_Int8  &vffe() {return _vffe;}
+    AP_Float &ar() {return _ar;}
+    AP_Float &ffex() {return _ffex;}
+    AP_Float &flyk() {return _flyk;}
+    AP_Float &ff_upper() {return _ff_upperlimit;}
+    AP_Float &ff_upper_grab() {return _ff_upperlimit_grab;}
     AP_Float &ff() { return _kff;}
     AP_Float &filt_T_hz() { return _filt_T_hz; }
     AP_Float &filt_E_hz() { return _filt_E_hz; }
@@ -85,7 +92,7 @@ public:
     float get_filt_T_alpha(float dt) const;
     float get_filt_E_alpha(float dt) const;
     float get_filt_D_alpha(float dt) const;
-
+    
     // set accessors
     void kP(const float v) { _kp.set(v); }
     void kI(const float v) { _ki.set(v); }
@@ -123,7 +130,13 @@ public:
     // single user of AC_PID by adding the parameter in the param
     // table of the parent class. It is made public for this reason
     AP_Float _slew_rate_tau;
-    
+    float _ffec_adapt=0.0;
+    bool _dg_en =false;
+    bool _extra_ff_en = false;
+    bool _yawk_en = false;
+    //float _ff_upperlimit = 0.25;
+    float _ff_lowerlimit = -0.2;
+    float _upperlimit =0.25;
 protected:
 
     // parameters
@@ -136,7 +149,18 @@ protected:
     AP_Float _filt_E_hz;         // PID error filter frequency in Hz
     AP_Float _filt_D_hz;         // PID derivative filter frequency in Hz
     AP_Float _slew_rate_max;
-
+    AP_Float _ffec;
+    AP_Float _kffec;
+    AP_Float _dg;
+    AP_Float _ar;
+    AP_Float _pg;
+    //scheduled feed forward enable param
+    AP_Int8 _vffe;
+    AP_Float _ffex;
+    AP_Float _flyk;
+    AP_Float _yawk;
+    AP_Float _ff_upperlimit;
+    AP_Float _ff_upperlimit_grab;
     SlewLimiter _slew_limiter{_slew_rate_max, _slew_rate_tau};
 
     // flags
@@ -163,4 +187,15 @@ private:
     const float default_filt_E_hz;
     const float default_filt_D_hz;
     const float default_slew_rate_max;
+    const float default_ffec=0.0f;
+    const float default_kffec =1.0f;
+    const float default_dg = 1.0f;
+    const float default_ar = 0.0f;
+    const float default_pg = 1.0f;
+    const int8_t default_vffe = 1;
+    const float default_ffex = 0.0f;
+    const float default_flyk = 0.0f;
+    const float default_yawk = 1.0f;
+    const float default_upper_limit = 0.25f;
+    const float default_upper_limit_grab = 0.30f;
 };

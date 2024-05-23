@@ -476,6 +476,17 @@ void Copter::rc_loop()
     // -----------------------------------------
     read_radio();
     rc().read_mode_switch();
+    //disable extra ff
+    if(rc().channel(7)->get_radio_in()<=1200 && attitude_control->get_rate_pitch_pid()._extra_ff_en==true)
+    {
+        attitude_control->get_rate_pitch_pid()._extra_ff_en = false;
+    }
+    //enable extra ff
+    if(rc().channel(7)->get_radio_in()>=1800 && attitude_control->get_rate_pitch_pid()._extra_ff_en ==false)
+    {
+        attitude_control->get_rate_pitch_pid()._extra_ff_en = true;
+    }
+    
 }
 
 // throttle_loop - should be run at 50 hz
@@ -522,6 +533,7 @@ void Copter::loop_rate_logging()
 {
     if (should_log(MASK_LOG_ATTITUDE_FAST) && !copter.flightmode->logs_attitude()) {
         Log_Write_Attitude();
+        
         Log_Write_PIDS(); // only logs if PIDS bitmask is set
     }
     if (should_log(MASK_LOG_FTN_FAST)) {
@@ -529,6 +541,13 @@ void Copter::loop_rate_logging()
     }
     if (should_log(MASK_LOG_IMU_FAST)) {
         AP::ins().Write_IMU();
+    }
+    if (should_log(MASK_LOG_ANY)){
+        Log_User_Variable();
+    }
+
+    if (should_log(MASK_LOG_RCOUT)) {
+        logger.Write_RCOUT();
     }
 }
 
@@ -543,6 +562,7 @@ void Copter::ten_hz_logging_loop()
     if (!should_log(MASK_LOG_ATTITUDE_FAST) && !copter.flightmode->logs_attitude()) {
     // log at 10Hz if PIDS bitmask is selected, even if no ATT bitmask is selected; logs at looprate if ATT_FAST and PIDS bitmask set
         Log_Write_PIDS();
+        //printf("logging PIDS in 10Hz loop");
     }
     // log EKF attitude data always at 10Hz unless ATTITUDE_FAST, then do it in the 25Hz loop
     if (!should_log(MASK_LOG_ATTITUDE_FAST)) {
@@ -557,9 +577,9 @@ void Copter::ten_hz_logging_loop()
             logger.Write_RSSI();
         }
     }
-    if (should_log(MASK_LOG_RCOUT)) {
-        logger.Write_RCOUT();
-    }
+    // if (should_log(MASK_LOG_RCOUT)) {
+    //     logger.Write_RCOUT();
+    // }
     if (should_log(MASK_LOG_NTUN) && (flightmode->requires_GPS() || landing_with_GPS() || !flightmode->has_manual_throttle())) {
         pos_control->write_log();
     }
@@ -644,6 +664,7 @@ void Copter::one_hz_loop()
 {
     if (should_log(MASK_LOG_ANY)) {
         Log_Write_Data(LogDataID::AP_STATE, ap.value);
+        
     }
 
     if (!motors->armed()) {

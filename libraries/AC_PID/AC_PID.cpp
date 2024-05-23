@@ -64,6 +64,95 @@ const AP_Param::GroupInfo AC_PID::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO_FLAGS_DEFAULT_POINTER("SMAX", 12, AC_PID, _slew_rate_max, default_slew_rate_max),
 
+    // @Param: FFEC
+    // @DisplayName: FFEC
+    // @Description: manually feed forward in rate controller
+    // @Range: 0 0.2
+    // @Increment: 0.01
+    // @User: Advanced
+    AP_GROUPINFO_FLAGS_DEFAULT_POINTER("FFEC", 13, AC_PID, _ffec, default_ffec),
+
+    // @Param: KFF
+    // @DisplayName: KFF
+    // @Description: proportion of feed forward
+    // @Range: 0 2
+    // @Increment: 0.01
+    // @User: Advanced
+    AP_GROUPINFO_FLAGS_DEFAULT_POINTER("KFF", 14, AC_PID, _kffec, default_kffec),
+
+    // @Param: DG
+    // @DisplayName: DG
+    // @Description: D gain scale parameter
+    // @Range: 0 1
+    // @Increment: 0.01
+    // @User: Advanced
+    AP_GROUPINFO_FLAGS_DEFAULT_POINTER("DG", 15, AC_PID, _dg, default_dg),
+
+    // @Param: AR
+    // @DisplayName: AR
+    // @Description: D gain scaler utilize angle range
+    // @Range: 0 5
+    // @Increment: 0.01
+    // @User: Advanced
+    AP_GROUPINFO_FLAGS_DEFAULT_POINTER("AR", 16, AC_PID, _ar, default_ar),
+
+    // @Param: PG
+    // @DisplayName: PG
+    // @Description: P gain scale parameter
+    // @Range: 0 1
+    // @Increment: 0.01
+    // @User: Advanced
+    AP_GROUPINFO_FLAGS_DEFAULT_POINTER("PG", 17, AC_PID, _pg, default_pg),
+
+
+    // @Param: VFFE
+    // @DisplayName: VFFE
+    // @Description: scheduled feed forward enabled parameter
+    // @Range: 0 1
+    // @Increment: 0.01
+    // @User: Advanced
+    AP_GROUPINFO_FLAGS_DEFAULT_POINTER("VFFE", 18, AC_PID,_vffe, default_vffe),
+
+    // @Param: FFEX
+    // @DisplayName: FFEX
+    // @Description: extra feedforward when grab things
+    // @Range: 0 1
+    // @Increment: 0.01
+    // @User: Advanced
+    AP_GROUPINFO_FLAGS_DEFAULT_POINTER("FFEX", 19, AC_PID,_ffex, default_ffex),
+
+    // @Param: FLYK
+    // @DisplayName: FLYK
+    // @Description: proportion of ff in fly mode
+    // @Range: 0 1
+    // @Increment: 0.01
+    // @User: Advanced
+    AP_GROUPINFO_FLAGS_DEFAULT_POINTER("FLYK", 20, AC_PID,_flyk, default_flyk),
+
+    // @Param: YAWK
+    // @DisplayName: YAWK
+    // @Description: yaw k gain
+    // @Range: 0 1
+    // @Increment: 0.01
+    // @User: Advanced
+    AP_GROUPINFO_FLAGS_DEFAULT_POINTER("YAWK", 21, AC_PID,_yawk, default_yawk),
+
+    // @Param: UPLM
+    // @DisplayName: UPLM
+    // @Description: ff up limit
+    // @Range: 0 1
+    // @Increment: 0.01
+    // @User: Advanced
+    AP_GROUPINFO_FLAGS_DEFAULT_POINTER("UPLM", 22, AC_PID, _ff_upperlimit, default_upper_limit),
+
+
+    // @Param: UPGL
+    // @DisplayName: UPGL
+    // @Description: ff up limit after grab
+    // @Range: 0 1
+    // @Increment: 0.01
+    // @User: Advanced
+    AP_GROUPINFO_FLAGS_DEFAULT_POINTER("UPGL", 23, AC_PID, _ff_upperlimit_grab, default_upper_limit_grab),
     AP_GROUPEND
 };
 
@@ -165,14 +254,39 @@ float AC_PID::update_all(float target, float measurement, float dt, bool limit, 
     // boost output if required
     P_out *= boost;
     D_out *= boost;
-
+    //just for yaw to get more gain 
+    if(_yawk_en == true)
+    {
+        P_out *= _yawk;
+    }
+    //scale D
+    if(_dg_en)
+    {
+        D_out*=_dg;
+        P_out*= _pg;
+    }
+    
+    //limitation for safety
+    if(_ffec_adapt> _upperlimit)
+    {
+        _ffec_adapt =_upperlimit;
+    }
+    if(_ffec_adapt< _ff_lowerlimit)
+    {
+        _ffec_adapt = _ff_lowerlimit;
+    }
     _pid_info.target = _target;
     _pid_info.actual = measurement;
     _pid_info.error = _error;
     _pid_info.P = P_out;
     _pid_info.D = D_out;
-
-    return P_out + _integrator + D_out;
+    
+    _pid_info.ffec = _ffec_adapt*_kffec;
+    _pid_info.dgen =_dg_en;
+    _pid_info.ffex_en = _extra_ff_en;
+    
+    //printf("groud rolling ff used");
+    return  P_out + _integrator + D_out +_ffec_adapt*_kffec;
 }
 
 //  update_error - set error input to PID controller and calculate outputs

@@ -40,14 +40,14 @@ const AP_Param::Info Copter::var_info[] = {
     // @Description: Allows setting an individual MAVLink system id for this vehicle to distinguish it from others on the same network
     // @Range: 1 255
     // @User: Advanced
-    GSCALAR(sysid_this_mav, "SYSID_THISMAV",   MAV_SYSTEM_ID),
+    GSCALAR(sysid_this_mav, "SYSID_THISMAV", MAV_SYSTEM_ID),
 
     // @Param: SYSID_MYGCS
     // @DisplayName: My ground station number
     // @Description: Allows restricting radio overrides to only come from my ground station
     // @Range: 1 255
     // @User: Advanced
-    GSCALAR(sysid_my_gcs,   "SYSID_MYGCS",     255),
+    GSCALAR(sysid_my_gcs, "SYSID_MYGCS", 255),
 
     // @Param: PILOT_THR_FILT
     // @DisplayName: Throttle filter cutoff
@@ -56,7 +56,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Units: Hz
     // @Range: 0 10
     // @Increment: .5
-    GSCALAR(throttle_filt,  "PILOT_THR_FILT",     0),
+    GSCALAR(throttle_filt, "PILOT_THR_FILT", 0),
 
     // @Param: PILOT_TKOFF_ALT
     // @DisplayName: Pilot takeoff altitude
@@ -65,7 +65,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Units: cm
     // @Range: 0.0 1000.0
     // @Increment: 10
-    GSCALAR(pilot_takeoff_alt,  "PILOT_TKOFF_ALT",  PILOT_TKOFF_ALT_DEFAULT),
+    GSCALAR(pilot_takeoff_alt, "PILOT_TKOFF_ALT", PILOT_TKOFF_ALT_DEFAULT),
 
     // @Param: PILOT_THR_BHV
     // @DisplayName: Throttle stick behavior
@@ -77,7 +77,7 @@ const AP_Param::Info Copter::var_info[] = {
 
     // @Group: SERIAL
     // @Path: ../libraries/AP_SerialManager/AP_SerialManager.cpp
-    GOBJECT(serial_manager, "SERIAL",   AP_SerialManager),
+    GOBJECT(serial_manager, "SERIAL", AP_SerialManager),
 
     // @Param: TELEM_DELAY
     // @DisplayName: Telemetry startup delay
@@ -86,7 +86,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Units: s
     // @Range: 0 30
     // @Increment: 1
-    GSCALAR(telem_delay,            "TELEM_DELAY",     0),
+    GSCALAR(telem_delay, "TELEM_DELAY", 0),
 
     // @Param: GCS_PID_MASK
     // @DisplayName: GCS PID tuning mask
@@ -94,7 +94,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @User: Advanced
     // @Values: 0:None,1:Roll,2:Pitch,4:Yaw,8:AccelZ
     // @Bitmask: 0:Roll,1:Pitch,2:Yaw,3:AccelZ
-    GSCALAR(gcs_pid_mask,           "GCS_PID_MASK",     0),
+    GSCALAR(gcs_pid_mask, "GCS_PID_MASK", 0),
 
 #if MODE_RTL_ENABLED == ENABLED
     // @Param: RTL_ALT
@@ -104,7 +104,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Range: 200 300000
     // @Increment: 1
     // @User: Standard
-    GSCALAR(rtl_altitude,   "RTL_ALT",     RTL_ALT),
+    GSCALAR(rtl_altitude, "RTL_ALT", RTL_ALT),
 
     // @Param: RTL_CONE_SLOPE
     // @DisplayName: RTL cone slope
@@ -113,7 +113,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Increment: .1
     // @Values: 0:Disabled,1:Shallow,3:Steep
     // @User: Standard
-    GSCALAR(rtl_cone_slope,   "RTL_CONE_SLOPE",     RTL_CONE_SLOPE_DEFAULT),
+    GSCALAR(rtl_cone_slope, "RTL_CONE_SLOPE", RTL_CONE_SLOPE_DEFAULT),
 
     // @Param: RTL_SPEED
     // @DisplayName: RTL speed
@@ -122,7 +122,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Range: 0 2000
     // @Increment: 50
     // @User: Standard
-    GSCALAR(rtl_speed_cms,   "RTL_SPEED",     0),
+    GSCALAR(rtl_speed_cms, "RTL_SPEED", 0),
 
     // @Param: RTL_ALT_FINAL
     // @DisplayName: RTL Final Altitude
@@ -131,7 +131,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Range: 0 1000
     // @Increment: 1
     // @User: Standard
-    GSCALAR(rtl_alt_final,  "RTL_ALT_FINAL", RTL_ALT_FINAL),
+    GSCALAR(rtl_alt_final, "RTL_ALT_FINAL", RTL_ALT_FINAL),
 
     // @Param: RTL_CLIMB_MIN
     // @DisplayName: RTL minimum climb
@@ -140,7 +140,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Range: 0 3000
     // @Increment: 10
     // @User: Standard
-    GSCALAR(rtl_climb_min,  "RTL_CLIMB_MIN",    RTL_CLIMB_MIN_DEFAULT),
+    GSCALAR(rtl_climb_min, "RTL_CLIMB_MIN", RTL_CLIMB_MIN_DEFAULT),
 
     // @Param: RTL_LOIT_TIME
     // @DisplayName: RTL loiter time
@@ -149,7 +149,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Range: 0 60000
     // @Increment: 1000
     // @User: Standard
-    GSCALAR(rtl_loiter_time,      "RTL_LOIT_TIME",    RTL_LOITER_TIME),
+    GSCALAR(rtl_loiter_time, "RTL_LOIT_TIME", RTL_LOITER_TIME),
 
     // @Param: RTL_ALT_TYPE
     // @DisplayName: RTL mode altitude type
@@ -178,14 +178,14 @@ const AP_Param::Info Copter::var_info[] = {
     // @Description: Bitmask to enable Super Simple mode for some flight modes. Setting this to Disabled(0) will disable Super Simple Mode. The bitmask is for flight mode switch positions
     // @Bitmask: 0:SwitchPos1, 1:SwitchPos2, 2:SwitchPos3, 3:SwitchPos4, 4:SwitchPos5, 5:SwitchPos6
     // @User: Standard
-    GSCALAR(super_simple,   "SUPER_SIMPLE",     0),
+    GSCALAR(super_simple, "SUPER_SIMPLE", 0),
 
     // @Param: WP_YAW_BEHAVIOR
     // @DisplayName: Yaw behaviour during missions
     // @Description: Determines how the autopilot controls the yaw during missions and RTL
     // @Values: 0:Never change yaw, 1:Face next waypoint, 2:Face next waypoint except RTL, 3:Face along GPS course
     // @User: Standard
-    GSCALAR(wp_yaw_behavior,  "WP_YAW_BEHAVIOR",    WP_YAW_BEHAVIOR_DEFAULT),
+    GSCALAR(wp_yaw_behavior, "WP_YAW_BEHAVIOR", WP_YAW_BEHAVIOR_DEFAULT),
 
     // @Param: LAND_SPEED
     // @DisplayName: Land speed
@@ -194,7 +194,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Range: 30 200
     // @Increment: 10
     // @User: Standard
-    GSCALAR(land_speed,             "LAND_SPEED",   LAND_SPEED),
+    GSCALAR(land_speed, "LAND_SPEED", LAND_SPEED),
 
     // @Param: LAND_SPEED_HIGH
     // @DisplayName: Land speed high
@@ -203,8 +203,8 @@ const AP_Param::Info Copter::var_info[] = {
     // @Range: 0 500
     // @Increment: 10
     // @User: Standard
-    GSCALAR(land_speed_high,        "LAND_SPEED_HIGH",   0),
-    
+    GSCALAR(land_speed_high, "LAND_SPEED_HIGH", 0),
+
     // @Param: PILOT_SPEED_UP
     // @DisplayName: Pilot maximum vertical speed ascending
     // @Description: The maximum vertical ascending velocity the pilot may request in cm/s
@@ -212,7 +212,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Range: 50 500
     // @Increment: 10
     // @User: Standard
-    GSCALAR(pilot_speed_up,     "PILOT_SPEED_UP",   PILOT_VELZ_MAX),
+    GSCALAR(pilot_speed_up, "PILOT_SPEED_UP", PILOT_VELZ_MAX),
 
     // @Param: PILOT_ACCEL_Z
     // @DisplayName: Pilot vertical acceleration
@@ -221,14 +221,14 @@ const AP_Param::Info Copter::var_info[] = {
     // @Range: 50 500
     // @Increment: 10
     // @User: Standard
-    GSCALAR(pilot_accel_z,  "PILOT_ACCEL_Z",    PILOT_ACCEL_Z_DEFAULT),
+    GSCALAR(pilot_accel_z, "PILOT_ACCEL_Z", PILOT_ACCEL_Z_DEFAULT),
 
     // @Param: FS_THR_ENABLE
     // @DisplayName: Throttle Failsafe Enable
     // @Description: The throttle failsafe allows you to configure a software failsafe activated by a setting on the throttle input channel
     // @Values:  0:Disabled,1:Enabled always RTL,2:Enabled Continue with Mission in Auto Mode (Removed in 4.0+),3:Enabled always Land,4:Enabled always SmartRTL or RTL,5:Enabled always SmartRTL or Land,6:Enabled Auto DO_LAND_START or RTL,7:Enabled always Brake or Land
     // @User: Standard
-    GSCALAR(failsafe_throttle,  "FS_THR_ENABLE",   FS_THR_ENABLED_ALWAYS_RTL),
+    GSCALAR(failsafe_throttle, "FS_THR_ENABLE", FS_THR_ENABLED_ALWAYS_RTL),
 
     // @Param: FS_THR_VALUE
     // @DisplayName: Throttle Failsafe Value
@@ -237,7 +237,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Units: PWM
     // @Increment: 1
     // @User: Standard
-    GSCALAR(failsafe_throttle_value, "FS_THR_VALUE",      FS_THR_VALUE_DEFAULT),
+    GSCALAR(failsafe_throttle_value, "FS_THR_VALUE", FS_THR_VALUE_DEFAULT),
 
     // @Param: THR_DZ
     // @DisplayName: Throttle deadzone
@@ -246,65 +246,65 @@ const AP_Param::Info Copter::var_info[] = {
     // @Range: 0 300
     // @Units: PWM
     // @Increment: 1
-    GSCALAR(throttle_deadzone,  "THR_DZ",    THR_DZ_DEFAULT),
+    GSCALAR(throttle_deadzone, "THR_DZ", THR_DZ_DEFAULT),
 
     // @Param: FLTMODE1
     // @DisplayName: Flight Mode 1
     // @Description: Flight mode when pwm of Flightmode channel(FLTMODE_CH) is <= 1230
-    // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,11:Drift,13:Sport,14:Flip,15:AutoTune,16:PosHold,17:Brake,18:Throw,19:Avoid_ADSB,20:Guided_NoGPS,21:Smart_RTL,22:FlowHold,23:Follow,24:ZigZag,25:SystemID,26:Heli_Autorotate,27:Auto RTL
+    // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,11:Drift,13:Sport,14:Flip,15:AutoTune,16:PosHold,17:Brake,18:Throw,19:Avoid_ADSB,20:Guided_NoGPS,21:Smart_RTL,22:FlowHold,23:Follow,24:ZigZag,25:SystemID,26:Heli_Autorotate,27:Auto RTL,29:Pendulum,
     // @User: Standard
-    GSCALAR(flight_mode1, "FLTMODE1",               (uint8_t)FLIGHT_MODE_1),
+    GSCALAR(flight_mode1, "FLTMODE1", (uint8_t)FLIGHT_MODE_1),
 
     // @Param: FLTMODE2
     // @CopyFieldsFrom: FLTMODE1
     // @DisplayName: Flight Mode 2
     // @Description: Flight mode when pwm of Flightmode channel(FLTMODE_CH) is >1230, <= 1360
-    GSCALAR(flight_mode2, "FLTMODE2",               (uint8_t)FLIGHT_MODE_2),
+    GSCALAR(flight_mode2, "FLTMODE2", (uint8_t)FLIGHT_MODE_2),
 
     // @Param: FLTMODE3
     // @CopyFieldsFrom: FLTMODE1
     // @DisplayName: Flight Mode 3
     // @Description: Flight mode when pwm of Flightmode channel(FLTMODE_CH) is >1360, <= 1490
-    GSCALAR(flight_mode3, "FLTMODE3",               (uint8_t)FLIGHT_MODE_3),
+    GSCALAR(flight_mode3, "FLTMODE3", (uint8_t)FLIGHT_MODE_3),
 
     // @Param: FLTMODE4
     // @CopyFieldsFrom: FLTMODE1
     // @DisplayName: Flight Mode 4
     // @Description: Flight mode when pwm of Flightmode channel(FLTMODE_CH) is >1490, <= 1620
-    GSCALAR(flight_mode4, "FLTMODE4",               (uint8_t)FLIGHT_MODE_4),
+    GSCALAR(flight_mode4, "FLTMODE4", (uint8_t)FLIGHT_MODE_4),
 
     // @Param: FLTMODE5
     // @CopyFieldsFrom: FLTMODE1
     // @DisplayName: Flight Mode 5
     // @Description: Flight mode when pwm of Flightmode channel(FLTMODE_CH) is >1620, <= 1749
-    GSCALAR(flight_mode5, "FLTMODE5",               (uint8_t)FLIGHT_MODE_5),
+    GSCALAR(flight_mode5, "FLTMODE5", (uint8_t)FLIGHT_MODE_5),
 
     // @Param: FLTMODE6
     // @CopyFieldsFrom: FLTMODE1
     // @DisplayName: Flight Mode 6
     // @Description: Flight mode when pwm of Flightmode channel(FLTMODE_CH) is >=1750
-    GSCALAR(flight_mode6, "FLTMODE6",               (uint8_t)FLIGHT_MODE_6),
+    GSCALAR(flight_mode6, "FLTMODE6", (uint8_t)FLIGHT_MODE_6),
 
     // @Param: FLTMODE_CH
     // @DisplayName: Flightmode channel
     // @Description: RC Channel to use for flight mode control
     // @Values: 0:Disabled,5:Channel5,6:Channel6,7:Channel7,8:Channel8,9:Channel9,10:Channel 10,11:Channel 11,12:Channel 12,13:Channel 13,14:Channel 14,15:Channel 15
     // @User: Advanced
-    GSCALAR(flight_mode_chan, "FLTMODE_CH",         CH_MODE_DEFAULT),
+    GSCALAR(flight_mode_chan, "FLTMODE_CH", CH_MODE_DEFAULT),
 
     // @Param: INITIAL_MODE
     // @DisplayName: Initial flight mode
     // @Description: This selects the mode to start in on boot. This is useful for when you want to start in AUTO mode on boot without a receiver.
     // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,11:Drift,13:Sport,14:Flip,15:AutoTune,16:PosHold,17:Brake,18:Throw,19:Avoid_ADSB,20:Guided_NoGPS,21:Smart_RTL,22:FlowHold,23:Follow,24:ZigZag,25:SystemID,26:Heli_Autorotate
     // @User: Advanced
-    GSCALAR(initial_mode,        "INITIAL_MODE",     (uint8_t)Mode::Number::STABILIZE),
+    GSCALAR(initial_mode, "INITIAL_MODE", (uint8_t)Mode::Number::STABILIZE),
 
     // @Param: SIMPLE
     // @DisplayName: Simple mode bitmask
     // @Description: Bitmask which holds which flight modes use simple heading mode (eg bit 0 = 1 means Flight Mode 0 uses simple mode). The bitmask is for flightmode switch positions.
     // @Bitmask: 0:SwitchPos1, 1:SwitchPos2, 2:SwitchPos3, 3:SwitchPos4, 4:SwitchPos5, 5:SwitchPos6
     // @User: Advanced
-    GSCALAR(simple_modes, "SIMPLE",                 0),
+    GSCALAR(simple_modes, "SIMPLE", 0),
 
     // @Param: LOG_BITMASK
     // @DisplayName: Log bitmask
@@ -452,7 +452,7 @@ const AP_Param::Info Copter::var_info[] = {
 #if AP_RELAY_ENABLED
     // @Group: RELAY_
     // @Path: ../libraries/AP_Relay/AP_Relay.cpp
-    GOBJECT(relay,                  "RELAY_", AP_Relay),
+    GOBJECT(relay, "RELAY_", AP_Relay),
 #endif
 
 #if PARACHUTE == ENABLED
@@ -464,7 +464,7 @@ const AP_Param::Info Copter::var_info[] = {
 #if AP_LANDINGGEAR_ENABLED
     // @Group: LGR_
     // @Path: ../libraries/AP_LandingGear/AP_LandingGear.cpp
-    GOBJECT(landinggear,    "LGR_", AP_LandingGear),
+    GOBJECT(landinggear, "LGR_", AP_LandingGear),
 #endif
 
 #if FRAME_CONFIG == HELI_FRAME
@@ -475,15 +475,15 @@ const AP_Param::Info Copter::var_info[] = {
 
     // @Group: COMPASS_
     // @Path: ../libraries/AP_Compass/AP_Compass.cpp
-    GOBJECT(compass,        "COMPASS_", Compass),
+    GOBJECT(compass, "COMPASS_", Compass),
 
     // @Group: INS
     // @Path: ../libraries/AP_InertialSensor/AP_InertialSensor.cpp
-    GOBJECT(ins,            "INS", AP_InertialSensor),
+    GOBJECT(ins, "INS", AP_InertialSensor),
 
     // @Group: WPNAV_
     // @Path: ../libraries/AC_WPNav/AC_WPNav.cpp
-    GOBJECTPTR(wp_nav, "WPNAV_",       AC_WPNav),
+    GOBJECTPTR(wp_nav, "WPNAV_", AC_WPNav),
 
     // @Group: LOIT_
     // @Path: ../libraries/AC_WPNav/AC_Loiter.cpp
@@ -492,7 +492,7 @@ const AP_Param::Info Copter::var_info[] = {
 #if MODE_CIRCLE_ENABLED == ENABLED
     // @Group: CIRCLE_
     // @Path: ../libraries/AC_WPNav/AC_Circle.cpp
-    GOBJECTPTR(circle_nav, "CIRCLE_",  AC_Circle),
+    GOBJECTPTR(circle_nav, "CIRCLE_", AC_Circle),
 #endif
 
     // @Group: ATC_
@@ -509,76 +509,76 @@ const AP_Param::Info Copter::var_info[] = {
 
     // @Group: SR0_
     // @Path: GCS_Mavlink.cpp
-    GOBJECTN(_gcs.chan_parameters[0],  gcs0,       "SR0_",     GCS_MAVLINK_Parameters),
+    GOBJECTN(_gcs.chan_parameters[0], gcs0, "SR0_", GCS_MAVLINK_Parameters),
 
 #if MAVLINK_COMM_NUM_BUFFERS >= 2
     // @Group: SR1_
     // @Path: GCS_Mavlink.cpp
-    GOBJECTN(_gcs.chan_parameters[1],  gcs1,       "SR1_",     GCS_MAVLINK_Parameters),
+    GOBJECTN(_gcs.chan_parameters[1], gcs1, "SR1_", GCS_MAVLINK_Parameters),
 #endif
 
 #if MAVLINK_COMM_NUM_BUFFERS >= 3
     // @Group: SR2_
     // @Path: GCS_Mavlink.cpp
-    GOBJECTN(_gcs.chan_parameters[2],  gcs2,       "SR2_",     GCS_MAVLINK_Parameters),
+    GOBJECTN(_gcs.chan_parameters[2], gcs2, "SR2_", GCS_MAVLINK_Parameters),
 #endif
 
 #if MAVLINK_COMM_NUM_BUFFERS >= 4
     // @Group: SR3_
     // @Path: GCS_Mavlink.cpp
-    GOBJECTN(_gcs.chan_parameters[3],  gcs3,       "SR3_",     GCS_MAVLINK_Parameters),
+    GOBJECTN(_gcs.chan_parameters[3], gcs3, "SR3_", GCS_MAVLINK_Parameters),
 #endif
 
 #if MAVLINK_COMM_NUM_BUFFERS >= 5
     // @Group: SR4_
     // @Path: GCS_Mavlink.cpp
-    GOBJECTN(_gcs.chan_parameters[4],  gcs4,       "SR4_",     GCS_MAVLINK_Parameters),
+    GOBJECTN(_gcs.chan_parameters[4], gcs4, "SR4_", GCS_MAVLINK_Parameters),
 #endif
 
 #if MAVLINK_COMM_NUM_BUFFERS >= 6
     // @Group: SR5_
     // @Path: GCS_Mavlink.cpp
-    GOBJECTN(_gcs.chan_parameters[5],  gcs5,       "SR5_",     GCS_MAVLINK_Parameters),
+    GOBJECTN(_gcs.chan_parameters[5], gcs5, "SR5_", GCS_MAVLINK_Parameters),
 #endif
 
 #if MAVLINK_COMM_NUM_BUFFERS >= 7
     // @Group: SR6_
     // @Path: GCS_Mavlink.cpp
-    GOBJECTN(_gcs.chan_parameters[6],  gcs6,       "SR6_",     GCS_MAVLINK_Parameters),
+    GOBJECTN(_gcs.chan_parameters[6], gcs6, "SR6_", GCS_MAVLINK_Parameters),
 #endif
 
     // @Group: AHRS_
     // @Path: ../libraries/AP_AHRS/AP_AHRS.cpp
-    GOBJECT(ahrs,                   "AHRS_",    AP_AHRS),
+    GOBJECT(ahrs, "AHRS_", AP_AHRS),
 
 #if HAL_MOUNT_ENABLED
     // @Group: MNT
     // @Path: ../libraries/AP_Mount/AP_Mount.cpp
-    GOBJECT(camera_mount,           "MNT",  AP_Mount),
+    GOBJECT(camera_mount, "MNT", AP_Mount),
 #endif
 
     // @Group: LOG
     // @Path: ../libraries/AP_Logger/AP_Logger.cpp
-    GOBJECT(logger,           "LOG",  AP_Logger),
+    GOBJECT(logger, "LOG", AP_Logger),
 
     // @Group: BATT
     // @Path: ../libraries/AP_BattMonitor/AP_BattMonitor.cpp
-    GOBJECT(battery,                "BATT",         AP_BattMonitor),
+    GOBJECT(battery, "BATT", AP_BattMonitor),
 
     // @Group: BRD_
     // @Path: ../libraries/AP_BoardConfig/AP_BoardConfig.cpp
-    GOBJECT(BoardConfig,            "BRD_",       AP_BoardConfig),
+    GOBJECT(BoardConfig, "BRD_", AP_BoardConfig),
 
 #if HAL_MAX_CAN_PROTOCOL_DRIVERS
     // @Group: CAN_
     // @Path: ../libraries/AP_CANManager/AP_CANManager.cpp
-    GOBJECT(can_mgr,        "CAN_",       AP_CANManager),
+    GOBJECT(can_mgr, "CAN_", AP_CANManager),
 #endif
 
 #if HAL_SPRAYER_ENABLED
     // @Group: SPRAY_
     // @Path: ../libraries/AC_Sprayer/AC_Sprayer.cpp
-    GOBJECT(sprayer,                "SPRAY_",       AC_Sprayer),
+    GOBJECT(sprayer, "SPRAY_", AC_Sprayer),
 #endif
 
 #if AP_SIM_ENABLED
@@ -603,28 +603,28 @@ const AP_Param::Info Copter::var_info[] = {
     // @Group: AVOID_
     // @Path: ../libraries/AC_Avoidance/AC_Avoid.cpp
 #if AC_AVOID_ENABLED == ENABLED
-    GOBJECT(avoid,      "AVOID_",   AC_Avoid),
+    GOBJECT(avoid, "AVOID_", AC_Avoid),
 #endif
 
 #if HAL_RALLY_ENABLED
     // @Group: RALLY_
     // @Path: AP_Rally.cpp,../libraries/AP_Rally/AP_Rally.cpp
-    GOBJECT(rally,      "RALLY_",   AP_Rally_Copter),
+    GOBJECT(rally, "RALLY_", AP_Rally_Copter),
 #endif
 
 #if FRAME_CONFIG == HELI_FRAME
     // @Group: H_
     // @Path: ../libraries/AP_Motors/AP_MotorsHeli_Single.cpp,../libraries/AP_Motors/AP_MotorsHeli_Dual.cpp,../libraries/AP_Motors/AP_MotorsHeli.cpp
-    GOBJECTVARPTR(motors, "H_",        &copter.motors_var_info),
+    GOBJECTVARPTR(motors, "H_", &copter.motors_var_info),
 #else
     // @Group: MOT_
     // @Path: ../libraries/AP_Motors/AP_MotorsMulticopter.cpp
-    GOBJECTVARPTR(motors, "MOT_",      &copter.motors_var_info),
+    GOBJECTVARPTR(motors, "MOT_", &copter.motors_var_info),
 #endif
 
     // @Group: RCMAP_
     // @Path: ../libraries/AP_RCMapper/AP_RCMapper.cpp
-    GOBJECT(rcmap, "RCMAP_",        RCMapper),
+    GOBJECT(rcmap, "RCMAP_", RCMapper),
 
 #if HAL_NAVEKF2_AVAILABLE
     // @Group: EK2_
@@ -646,24 +646,24 @@ const AP_Param::Info Copter::var_info[] = {
 
     // @Group: RSSI_
     // @Path: ../libraries/AP_RSSI/AP_RSSI.cpp
-    GOBJECT(rssi, "RSSI_",  AP_RSSI),
+    GOBJECT(rssi, "RSSI_", AP_RSSI),
     
 #if RANGEFINDER_ENABLED == ENABLED
     // @Group: RNGFND
     // @Path: ../libraries/AP_RangeFinder/AP_RangeFinder.cpp
-    GOBJECT(rangefinder,   "RNGFND", RangeFinder),
+    GOBJECT(rangefinder, "RNGFND", RangeFinder),
 #endif
 
 #if AP_TERRAIN_AVAILABLE
     // @Group: TERRAIN_
     // @Path: ../libraries/AP_Terrain/AP_Terrain.cpp
-    GOBJECT(terrain,                "TERRAIN_", AP_Terrain),
+    GOBJECT(terrain, "TERRAIN_", AP_Terrain),
 #endif
 
 #if AP_OPTICALFLOW_ENABLED
     // @Group: FLOW
     // @Path: ../libraries/AP_OpticalFlow/AP_OpticalFlow.cpp
-    GOBJECT(optflow,   "FLOW", AP_OpticalFlow),
+    GOBJECT(optflow, "FLOW", AP_OpticalFlow),
 #endif
 
 #if AC_PRECLAND_ENABLED
@@ -681,7 +681,7 @@ const AP_Param::Info Copter::var_info[] = {
 #if HAL_ADSB_ENABLED
     // @Group: ADSB_
     // @Path: ../libraries/AP_ADSB/AP_ADSB.cpp
-    GOBJECT(adsb,                "ADSB_", AP_ADSB),
+    GOBJECT(adsb, "ADSB_", AP_ADSB),
 
     // @Group: AVD_
     // @Path: ../libraries/AP_Avoidance/AP_Avoidance.cpp
@@ -690,7 +690,7 @@ const AP_Param::Info Copter::var_info[] = {
 
     // @Group: NTF_
     // @Path: ../libraries/AP_Notify/AP_Notify.cpp
-    GOBJECT(notify, "NTF_",  AP_Notify),
+    GOBJECT(notify, "NTF_", AP_Notify),
 
 #if MODE_THROW_ENABLED == ENABLED
     // @Param: THROW_MOT_START
@@ -715,14 +715,14 @@ const AP_Param::Info Copter::var_info[] = {
 
     // @Group:
     // @Path: Parameters.cpp
-    GOBJECT(g2, "",  ParametersG2),
+    GOBJECT(g2, "", ParametersG2),
+    GOBJECT(Eric, "",  EricCopter_Parameter),
 
     // @Group:
     // @Path: ../libraries/AP_Vehicle/AP_Vehicle.cpp
     PARAM_VEHICLE_INFO,
 
-    AP_VAREND
-};
+    AP_VAREND};
 
 /*
   2nd group of parameters
@@ -1166,6 +1166,174 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
 
     AP_GROUPEND
 };
+
+const AP_Param::GroupInfo EricCopter_Parameter::var_info[] = {
+
+    // @Param: ERIC_D_L
+    // @DisplayName: Descent_Low_Alt
+    // @Description: The altitude seen as decented to grouund, default is 22
+    // @Range: 0 50
+    // @Units: cm
+    // @User: Standard
+    AP_GROUPINFO("ERIC_D_L", 1, EricCopter_Parameter, ERIC_D_L, 22),
+
+    // @Param: ERIC_D_H
+    // @DisplayName: Descent_High_Alt
+    // @Description: The altitude seen as begin low speed decent, just like LandMode, default is 200
+    // @Range: 200 400
+    // @Units: cm
+    // @User: Standard
+    AP_GROUPINFO("ERIC_D_H", 2, EricCopter_Parameter, ERIC_D_H, 200),
+
+    // @Param: ERIC_G_THR
+    // @DisplayName: Ground_Throttle
+    // @Description: The throttle used on the fround rolling
+    // @Range: 0.15 0.5
+    // @Units: whatever
+    // @User: Standard
+    AP_GROUPINFO("ERIC_G_THR", 3, EricCopter_Parameter, ERIC_G_THR, 0.2),
+
+    // @Param: ERIC_LD_SPEED
+    // @DisplayName: Land_Speed
+    // @Description: The landing speed in decent period
+    // @Range: 1 15
+    // @Units: cm/s
+    // @User: Standard
+    AP_GROUPINFO("ERIC_LD_SPEED", 4, EricCopter_Parameter, ERIC_LD_SPEED, 5),
+
+    // @Param: ERIC_PIT_ANG_P
+    // @DisplayName: P_Gain_of_Pitch_Angle
+    // @Description: PID prarameter P for pitch Angle
+    // @Range: 3.000 12.000
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_PIT_ANG_P", 5, EricCopter_Parameter, ERIC_PIT_ANG_P, 11.0),
+
+    // @Param: ERIC_ROL_ANG_P
+    // @DisplayName: P_Gain_of_Roll_Angle
+    // @Description: PID prarameter P for Roll Angle
+    // @Range: 3.000 12.000
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_ROL_ANG_P", 6, EricCopter_Parameter, ERIC_ROL_ANG_P, 11.0),
+
+    // @Param: ERIC_PIT_RAT_P
+    // @DisplayName: P_Gain_of_Pitch_Rate
+    // @Description: PID prarameter P for Pitch Rate
+    // @Range: 0.010 0.500
+    // @Increment: 0.005
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_PIT_RAT_P", 7, EricCopter_Parameter, ERIC_PIT_RAT_P, 0.17),
+
+    // @Param: ERIC_PIT_RAT_I
+    // @DisplayName: I_Gain_of_Pitch_Rate
+    // @Description: PID prarameter I for Pitch Rate
+    // @Range: 0.00 0.60
+    // @Increment: 0.01
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_PIT_RAT_I", 8, EricCopter_Parameter, ERIC_PIT_RAT_I, 0.17),
+
+    // @Param: ERIC_PIT_RAT_D
+    // @DisplayName: D_Gain_of_Pitch_Rate
+    // @Description: PID prarameter D for Pitch Rate
+    // @Range: 0.000 0.030
+    // @Increment: 0.001
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_PIT_RAT_D", 9, EricCopter_Parameter, ERIC_PIT_RAT_D, 0.00602),
+
+    // @Param: ERIC_ROL_RAT_P
+    // @DisplayName: P_Gain_of_Roll_Rate
+    // @Description: PID prarameter P for Roll Rate
+    // @Range: 0.010 0.500
+    // @Increment: 0.005
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_ROL_RAT_P", 10, EricCopter_Parameter, ERIC_ROL_RAT_P, 0.17),
+
+    // @Param: ERIC_ROL_RAT_I
+    // @DisplayName: I_Gain_of_Roll_Rate
+    // @Description: PID prarameter I for Roll Rate
+    // @Range: 0.00 0.60
+    // @Increment: 0.01
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_ROL_RAT_I", 11, EricCopter_Parameter, ERIC_ROL_RAT_I, 0.17),
+
+    // @Param: ERIC_ROL_RAT_D
+    // @DisplayName: D_Gain_of_Roll_Rate
+    // @Description: PID prarameter D for Roll Rate
+    // @Range: 0.000 0.030
+    // @Increment: 0.001
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_ROL_RAT_D", 12, EricCopter_Parameter, ERIC_ROL_RAT_D, 0.00602),
+
+    // @Param: ERIC_LD_W_T
+    // @DisplayName: ERIC_LD_W_T
+    // @Description: Wait time to ensure the Copter has landed, the mode loop is called at 400Hz, so value of 200 means 500, etc.
+    // @Range: 0 800
+    // @Increment: 40
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_LD_W_T", 13, EricCopter_Parameter, ERIC_LD_W_T, 200),
+
+    // @Param: ERIC_D_TAKEOFF
+    // @DisplayName: ERIC_D_TAKEOFF
+    // @Description: The distance seen as already takeoff , then switch to Loiter Mode
+    // @Range: 0 200
+    // @Increment: 1
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_D_TAKEOFF", 14, EricCopter_Parameter, ERIC_D_TAKEOFF, 25),
+
+    // @Param: ERIC_TO_W_T
+    // @DisplayName: ERIC_TO_W_T
+    // @Description: Time wait to make sure safety takeoff
+    // @Range: 0 400
+    // @Increment: 40
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_TO_W_T", 15, EricCopter_Parameter, ERIC_TO_W_T, 100),
+
+    // @Param: ERIC_YAW_RAT_P
+    // @DisplayName: ERIC_YAW_RAT_P
+    // @Description: yaw rate controller P
+    // @Range: 0.1 2.5
+    // @Increment: 0.005
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_YAW_RAT_P", 16, EricCopter_Parameter, ERIC_YAW_RAT_P, 0.6),
+
+    // @Param: ERIC_YAW_RAT_I
+    // @DisplayName: ERIC_YAW_RAT_I
+    // @Description: yaw rate controller I
+    // @Range: 0.01 1
+    // @Increment: 0.01
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_YAW_RAT_I", 17, EricCopter_Parameter, ERIC_YAW_RAT_I, 0.06),
+
+    // @Param: ERIC_YAW_RAT_D
+    // @DisplayName: ERIC_YAW_RAT_D
+    // @Description: yaw rate controller D
+    // @Range: 0.01 1
+    // @Increment: 0.01
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_YAW_RAT_D", 18, EricCopter_Parameter, ERIC_YAW_RAT_D, 0.0),
+    // @Param: ERIC_TO_THR
+    // @DisplayName: ERIC_TO_THR
+    // @Description: takeoff upper boundary
+    // @Range: 0.01 1
+    // @Increment: 0.01
+    // @Units:
+    // @User: Standard
+    AP_GROUPINFO("ERIC_TO_THR", 19, EricCopter_Parameter, ERIC_TO_THR, 1.0),
+
+    AP_GROUPEND};
 
 /*
   extension to g2 parameters
@@ -1767,7 +1935,12 @@ void Copter::convert_tradheli_parameters(void) const
         { Parameters::k_param_motors, 1408, AP_PARAM_INT16, "H_RSC_THRCRV_50" },
         { Parameters::k_param_motors, 1472, AP_PARAM_INT16, "H_RSC_THRCRV_75" },
         { Parameters::k_param_motors, 1536, AP_PARAM_INT16, "H_RSC_THRCRV_100" },
-        { Parameters::k_param_motors, 448, AP_PARAM_INT16, "H_RSC_SETPOINT" },
+        { Parameters::k_param_motors, 4// @Param: BB_PIT_R_P
+    // @DisplayName: BB GROUND PITCH RATE P
+    // @Description: PID controller use in the ground
+    // @Range:0-1
+    // @User: Standard
+    AP_GROUPINFO("BB_PIT_R_P", 1, ParametersG7,bb_pit_r_P, 0),48, AP_PARAM_INT16, "H_RSC_SETPOINT" },
         { Parameters::k_param_motors, 768, AP_PARAM_INT16, "H_RSC_CRITICAL" },
         { Parameters::k_param_motors, 832, AP_PARAM_INT16, "H_RSC_IDLE" },
     };

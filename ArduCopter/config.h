@@ -248,6 +248,12 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
+// Pendulum - one wheel hovering
+#ifndef MODE_PENDULUM_ENABLED
+# define MODE_PENDULUM_ENABLED ENABLED
+#endif
+
+//////////////////////////////////////////////////////////////////////////////
 // ZigZag - allow vehicle to fly in a zigzag manner with predefined point A B
 #ifndef MODE_ZIGZAG_ENABLED
 # define MODE_ZIGZAG_ENABLED ENABLED
@@ -317,7 +323,7 @@
  # define FLIGHT_MODE_5                  Mode::Number::STABILIZE
 #endif
 #ifndef FLIGHT_MODE_6
- # define FLIGHT_MODE_6                  Mode::Number::STABILIZE
+ # define FLIGHT_MODE_6                  Mode::Number::PENDULUM
 #endif
 
 

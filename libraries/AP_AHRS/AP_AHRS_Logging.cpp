@@ -142,7 +142,7 @@ void AP_AHRS_View::Write_AttitudeView(const Vector3f &targets) const
 // Write a rate packet
 void AP_AHRS_View::Write_Rate(const AP_Motors &motors, const AC_AttitudeControl &attitude_control,
                                 const AC_PosControl &pos_control) const
-{
+{   //rate_targets--->_ang_vel_body
     const Vector3f &rate_targets = attitude_control.rate_bf_targets();
     const Vector3f &accel_target = pos_control.get_accel_target_cmss();
     const auto timeus = AP_HAL::micros64();

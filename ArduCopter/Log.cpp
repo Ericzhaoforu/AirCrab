@@ -70,6 +70,7 @@ void Copter::Log_Write_Attitude()
     Vector3f targets = attitude_control->get_att_target_euler_cd();
     targets.z = wrap_360_cd(targets.z);
     ahrs.Write_Attitude(targets);
+    //printf("roll sensor %d\n",ahrs.roll_sensor);
     ahrs_view->Write_Rate(*motors, *attitude_control, *pos_control);
  }
 
@@ -358,6 +359,59 @@ struct PACKED log_Guided_Attitude_Target {
     float climb_rate;
 };
 
+// Log variable I want to see
+struct PACKED log_User_Variable {
+    LOG_PACKET_HEADER;
+    uint64_t time_us;
+    //float voltage_compensation;
+    float y_thrust;
+    float p_thrust;
+    float r_thrust;
+    float m_state;
+    //float thr_avg_max;
+    // float thrust_motor1;
+    // float thrust_motor2;
+    // float thrust_motor3;
+    // float thrust_motor4;
+    float thr_thrust_best_rpy;
+    float rpy_sca;
+    bool distance_low;
+    bool accel_low;
+    bool rate_low;
+    bool to_thr_out;
+    int16_t to_count;
+    int8_t Ls;
+};
+
+void Copter::Log_User_Variable()
+{
+    //float compensation_gain = motors->thr_lin.get_compensation_gain();
+    if (should_log(MASK_LOG_ANY)) {
+    const log_User_Variable pkt{
+        LOG_PACKET_HEADER_INIT(LOG_DATA_USER_MSG),
+        time_us : AP_HAL::micros64(),
+        //voltage_compensation: compensation_gain,
+        y_thrust: motors->t_y,
+        p_thrust: motors->t_p,
+        r_thrust: motors->t_r,
+        m_state: motor_state,
+        //thr_avg_max: motors->t_avg_max,
+        //thrust_motor1: motors->rpyt_out[0],
+        //thrust_motor2: motors->rpyt_out[1],
+        //thrust_motor3: motors->rpyt_out[2],
+        //thrust_motor4: motors->rpyt_out[3],
+        thr_thrust_best_rpy: motors->best_thr,
+        rpy_sca: motors->rpy_sC,
+        distance_low: motors->distance_l,
+        accel_low: motors->accel_l,
+        rate_low:motors->rate_l,
+        to_thr_out: motors->take_fly,
+        to_count: mode_pendulum.Count_Takeoff_End,
+        Ls: copter.loiterstate,
+    };
+    logger.WriteBlock(&pkt, sizeof(pkt));
+    }
+}
 // Write a Guided mode position target
 // pos_target is lat, lon, alt OR offset from ekf origin in cm
 // terrain should be 0 if pos_target.z is alt-above-ekf-origin, 1 if alt-above-terrain
@@ -558,6 +612,27 @@ const struct LogStructure Copter::log_structure[] = {
 
     { LOG_GUIDED_ATTITUDE_TARGET_MSG, sizeof(log_Guided_Attitude_Target),
       "GUIA",  "QBffffffff",    "TimeUS,Type,Roll,Pitch,Yaw,RollRt,PitchRt,YawRt,Thrust,ClimbRt", "s-dddkkk-n", "F-000000-0" , true },
+
+// @LoggerMessage: Eric
+// @Description: Ground rolling Logger
+// @Field: TimeUS: Time since system startup
+// @Field: YT: yaw thrust output 
+// @Field: PT: pitch thrust output
+// @Field: RT: Roll thrust output
+// @Field: State: Motor state, 0:shut down,1:idle, 2:spooling up, 3:spooling down, 4: unlimited
+// @Field: 1: Thrust M1 
+// @Field: 2: Thrust M2 
+// @Field: 3: Thrust M3 
+// @Field: 4: Thrust M4 
+// @Field: T_B: BEST Thrust 
+// @Field: rpy_S: Scaling of attitude
+// @Field: distance_low: low distance flag
+// @Field: accel_low: low accel flag
+// @Field: vel_low: low velo flag
+// @Field: to_thr_out: thr out when takeoff detected
+// @Field: to_count: takeoff counter
+{ LOG_DATA_USER_MSG, sizeof(log_User_Variable),
+      "ERIC",  "QffffffBBBBhb",    "TimeUS,YT,PT,RT,State,T_B,rpy_S,d_l,a_l,v_l,To,ToC,Ls", "s------------", "F------------" , true },
 };
 
 void Copter::Log_Write_Vehicle_Startup_Messages()

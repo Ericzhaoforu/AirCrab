@@ -46,7 +46,7 @@ uint16_t AP_Param::sentinal_offset;
 // singleton instance
 AP_Param *AP_Param::_singleton;
 
-#define ENABLE_DEBUG 0
+#define ENABLE_DEBUG 1
 
 #if ENABLE_DEBUG
 # define FATAL(fmt, args ...) AP_HAL::panic(fmt, ## args);
@@ -212,11 +212,13 @@ void AP_Param::check_group_info(const struct AP_Param::GroupInfo *  group_info,
                                 uint8_t                             group_shift,
                                 uint8_t                             prefix_length)
 {
+    
     uint8_t type;
     uint64_t used_mask = 0;
     for (uint8_t i=0;
          (type=group_info[i].type) != AP_PARAM_NONE;
          i++) {
+        //printf("reading param group %s\n",group_info[i].name);
         uint8_t idx = group_info[i].idx;
         if (idx >= (1<<_group_level_shift)) {
             FATAL("idx too large (%u) in %s", idx, group_info[i].name);
@@ -243,12 +245,13 @@ void AP_Param::check_group_info(const struct AP_Param::GroupInfo *  group_info,
         }
         uint8_t size = type_size((enum ap_var_type)type);
         if (size == 0) {
-            FATAL("invalid type in %s", group_info[i].name);
+            FATAL("invalid type in %s index: %u", group_info[i].name,group_info[i].idx);
         }
         if (prefix_length + strlen(group_info[i].name) > 16) {
             FATAL("suffix is too long in %s", group_info[i].name);
         }
         (*total_size) += size + sizeof(struct Param_header);
+        //Debug("curindex %d\n", i);
     }
 }
 

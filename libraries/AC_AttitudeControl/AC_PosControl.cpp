@@ -5,7 +5,7 @@
 #include <AP_Motors/AP_Motors.h>    // motors library
 #include <AP_Vehicle/AP_Vehicle_Type.h>
 #include <AP_Scheduler/AP_Scheduler.h>
-
+#include <stdio.h>
 extern const AP_HAL::HAL& hal;
 
 #if APM_BUILD_TYPE(APM_BUILD_ArduPlane)
@@ -609,6 +609,7 @@ void AC_PosControl::update_xy_controller()
             // call internal error because initialisation has not been done
             INTERNAL_ERROR(AP_InternalError::error_t::flow_of_control);
         }
+        printf("raise from xy;");
     }
     _last_update_xy_ticks = AP::scheduler().ticks32();
 
@@ -923,6 +924,7 @@ void AC_PosControl::update_z_controller()
         if (has_good_timing()) {
             // call internal error because initialisation has not been done
             INTERNAL_ERROR(AP_InternalError::error_t::flow_of_control);
+            //printf("raise from z;");
         }
     }
     _last_update_z_ticks = AP::scheduler().ticks32();

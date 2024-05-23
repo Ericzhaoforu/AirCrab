@@ -126,6 +126,7 @@ void AP_OpticalFlow::init(uint32_t log_bit)
     case Type::NONE:
         break;
     case Type::PX4FLOW:
+        hal.console->printf("Detecting PX4");
 #if AP_OPTICALFLOW_PX4FLOW_ENABLED
         backend = AP_OpticalFlow_PX4Flow::detect(*this);
 #endif

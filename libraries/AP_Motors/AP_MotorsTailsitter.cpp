@@ -130,7 +130,10 @@ uint32_t AP_MotorsTailsitter::get_motor_mask()
 
     return motor_mask;
 }
-
+void  AP_MotorsTailsitter::output_armed_stabilizing_Eric()
+{
+    output_armed_stabilizing();
+}
 // calculate outputs to the motors
 void AP_MotorsTailsitter::output_armed_stabilizing()
 {

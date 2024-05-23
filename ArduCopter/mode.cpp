@@ -11,6 +11,7 @@
 Mode::Mode(void) :
     g(copter.g),
     g2(copter.g2),
+    Eric(copter.Eric),
     wp_nav(copter.wp_nav),
     loiter_nav(copter.loiter_nav),
     pos_control(copter.pos_control),
@@ -157,6 +158,12 @@ Mode *Copter::mode_from_mode_num(const Mode::Number mode)
             break;
 #endif
 
+#if MODE_PENDULUM_ENABLED == ENABLED
+        case Mode::Number::PENDULUM:
+            ret = &mode_pendulum;
+            break;
+#endif
+
 #if MODE_SYSTEMID_ENABLED == ENABLED
         case Mode::Number::SYSTEMID:
             ret = (Mode *)g2.mode_systemid_ptr;
@@ -222,7 +229,8 @@ bool Copter::gcs_mode_enabled(const Mode::Number mode_num)
         (uint8_t)Mode::Number::SYSTEMID,
         (uint8_t)Mode::Number::AUTOROTATE,
         (uint8_t)Mode::Number::AUTO_RTL,
-        (uint8_t)Mode::Number::TURTLE
+        (uint8_t)Mode::Number::TURTLE,
+        (uint8_t)Mode::Number::PENDULUM,
     };
 
     if (!block_GCS_mode_change((uint8_t)mode_num, mode_list, ARRAY_SIZE(mode_list))) {
@@ -627,6 +635,7 @@ void Mode::land_run_vertical_control(bool pause_descent)
     if (!pause_descent) {
 
         // do not ignore limits until we have slowed down for landing
+        //ignore decent limit if below 10m or seems landing
         ignore_descent_limit = (MAX(g2.land_alt_low,100) > get_alt_above_ground_cm()) || copter.ap.land_complete_maybe;
 
         float max_land_descent_velocity;

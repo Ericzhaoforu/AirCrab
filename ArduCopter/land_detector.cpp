@@ -51,7 +51,7 @@ void Copter::update_land_detector()
         if (!flightmode->is_taking_off() && motors->get_takeoff_collective() && motors->get_spool_state() == AP_Motors::SpoolState::THROTTLE_UNLIMITED) {
 #else
         // if throttle output is high then clear landing flag
-        if (!flightmode->is_taking_off() && motors->get_throttle_out() > get_non_takeoff_throttle() && motors->get_spool_state() == AP_Motors::SpoolState::THROTTLE_UNLIMITED) {
+        if (!flightmode->is_taking_off() && motors->get_throttle_out() > get_non_takeoff_throttle() && motors->get_spool_state() == AP_Motors::SpoolState::THROTTLE_UNLIMITED && 0) {
             // this should never happen because take-off should be detected at the flight mode level
             // this here to highlight there is a bug or missing take-off detection
             INTERNAL_ERROR(AP_InternalError::error_t::flow_of_control);
@@ -156,7 +156,7 @@ void Copter::set_land_complete(bool b)
     // trigger disarm-on-land if configured
     bool disarm_on_land_configured = (g.throttle_behavior & THR_BEHAVE_DISARM_ON_LAND_DETECT) != 0;
     const bool mode_disarms_on_land = flightmode->allows_arming(AP_Arming::Method::LANDING) && !flightmode->has_manual_throttle();
-
+    //never executed in pendulum mode
     if (ap.land_complete && motors->armed() && disarm_on_land_configured && mode_disarms_on_land) {
         arming.disarm(AP_Arming::Method::LANDED);
     }

@@ -104,7 +104,20 @@ public:
 
     // var_info for holding Parameter information
     static const struct AP_Param::GroupInfo        var_info[];
-
+        float t_p;
+    float t_y=0;
+    float t_r=0;
+    float rpy_s=0;
+    float rpyt_out[4]={0,0,0,0};
+    float t_avg_max=0;
+    float best_thr=0;
+    float rpy_sC=0;
+    bool distance_l=0;
+    bool accel_l=0;
+    bool rate_l=0;
+    bool is_Ground_Rolling =false;
+    float g_thr = 0.0;
+    bool take_fly=false;
 protected:
 
     // run spool logic

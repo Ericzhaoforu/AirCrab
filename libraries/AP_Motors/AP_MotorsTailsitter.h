@@ -35,7 +35,7 @@ public:
 protected:
     // calculate motor outputs
     void output_armed_stabilizing() override;
-
+    void output_armed_stabilizing_Eric() override;
     const char* _get_frame_string() const override { return "TAILSITTER"; }
 
     // spin a motor at the pwm value specified

@@ -1,7 +1,7 @@
 #include "AC_AttitudeControl_Multi.h"
 #include <AP_HAL/AP_HAL.h>
 #include <AP_Math/AP_Math.h>
-
+#include <stdio.h>
 // table of user settable parameters
 const AP_Param::GroupInfo AC_AttitudeControl_Multi::var_info[] = {
     // parameters from parent vehicle
@@ -73,6 +73,13 @@ const AP_Param::GroupInfo AC_AttitudeControl_Multi::var_info[] = {
     // @Increment: 0.5
     // @User: Advanced
 
+    // @Param: RAT_RLL_FFEC
+    // @DisplayName: RAT_RLL_FFEC
+    // @Description: roll rate controller manually feed forward
+    // @Range: 0 0.2
+    // @Increment: 0.01
+    // @User: Advanced
+
     AP_SUBGROUPINFO(_pid_rate_roll, "RAT_RLL_", 1, AC_AttitudeControl_Multi, AC_PID),
 
     // @Param: RAT_PIT_P
@@ -139,6 +146,13 @@ const AP_Param::GroupInfo AC_AttitudeControl_Multi::var_info[] = {
     // @Description: Sets an upper limit on the slew rate produced by the combined P and D gains. If the amplitude of the control action produced by the rate feedback exceeds this value, then the D+P gain is reduced to respect the limit. This limits the amplitude of high frequency oscillations caused by an excessive gain. The limit should be set to no more than 25% of the actuators maximum slew rate to allow for load effects. Note: The gain will not be reduced to less than 10% of the nominal value. A value of zero will disable this feature.
     // @Range: 0 200
     // @Increment: 0.5
+    // @User: Advanced
+
+    // @Param: RAT_PIT_FFEC
+    // @DisplayName: RAT_PIT_FFEC
+    // @Description: roll rate controller manually used feed forward
+    // @Range: 0 0.2
+    // @Increment: 0.01
     // @User: Advanced
 
     AP_SUBGROUPINFO(_pid_rate_pitch, "RAT_PIT_", 2, AC_AttitudeControl_Multi, AC_PID),
@@ -209,6 +223,13 @@ const AP_Param::GroupInfo AC_AttitudeControl_Multi::var_info[] = {
     // @Increment: 0.5
     // @User: Advanced
 
+    // @Param: RAT_YAW_FFEC
+    // @DisplayName: RAT_YAW_FFEC 
+    // @Description: yaw rate controller manually used feed forward
+    // @Range: 0 0.2
+    // @Increment: 0.01
+    // @User: Advanced
+
     AP_SUBGROUPINFO(_pid_rate_yaw, "RAT_YAW_", 3, AC_AttitudeControl_Multi, AC_PID),
 
     // @Param: THR_MIX_MIN
@@ -238,6 +259,13 @@ const AP_Param::GroupInfo AC_AttitudeControl_Multi::var_info[] = {
     // @Range: 0 1
     // @User: Advanced
     AP_GROUPINFO("THR_G_BOOST", 7, AC_AttitudeControl_Multi, _throttle_gain_boost, 0.0f),
+
+    // @Param: PIT_FF_RANGE
+    // @DisplayName: range for dynamic ff
+    // @Description: 
+    // @Range: 0 pi
+    // @User: Advanced
+    AP_GROUPINFO("PIT_FF_RANGE", 8, AC_AttitudeControl_Multi, _pit_ff_range, 0.0f),
 
     AP_GROUPEND
 };
@@ -370,8 +398,86 @@ void AC_AttitudeControl_Multi::rate_controller_run()
 
     _ang_vel_body += _sysid_ang_vel_body;
 
-    Vector3f gyro_latest = _ahrs.get_gyro_latest();
+    // cur_pitch in rad
+    float cur_pitch = _ahrs.pitch;
 
+    // if(get_rate_pitch_pid().vffe()==1)
+    //     {
+    //         printf("ffec enabled\n");
+    //     }
+    Vector3f gyro_latest = _ahrs.get_gyro_latest();
+    //printf("pitch angle:%d\n",_ahrs.pitch_sensor);
+    
+    //calculate the ff
+    get_rate_pitch_pid()._ffec_adapt = get_rate_pitch_pid().ffec();
+    //extra feed forward enabled
+    if(get_rate_pitch_pid()._extra_ff_en == true && get_rate_yaw_pid()._extra_ff_en == false)
+    {
+        get_rate_yaw_pid()._yawk_en=true;
+        get_rate_pitch_pid()._ffec_adapt += get_rate_pitch_pid().ffex();
+    }
+
+    if(get_rate_pitch_pid()._extra_ff_en ==false && get_rate_yaw_pid()._extra_ff_en == true)
+    {
+        get_rate_yaw_pid()._yawk_en =false;
+    }
+    
+    //we need to schedule pitch ff
+        //printf("cur pit:%f\n",cur_pitch);
+        //printf("range:%f\n",_pit_ff_range/180*3.1415926);
+        if(abs(cur_pitch) > _pit_ff_range/180*3.1415926)
+        {
+            //scheduled feed forward enabled
+            if(get_rate_pitch_pid().vffe()==1)
+            {
+                
+                //printf("ffec enabled\n");
+                float mg = get_rate_pitch_pid()._ffec_adapt/4;
+                if(get_rate_pitch_pid()._extra_ff_en == true)
+                {
+                    get_rate_pitch_pid()._ffec_adapt = mg*cosf(cur_pitch)*4-mg*sinf(cur_pitch)*23.7;
+                    get_rate_pitch_pid()._upperlimit = get_rate_pitch_pid().ff_upper_grab();
+                }
+                else
+                {
+                    get_rate_pitch_pid()._ffec_adapt = mg*cosf(cur_pitch)*4-mg*sinf(cur_pitch)*27;
+                    get_rate_pitch_pid()._upperlimit = get_rate_pitch_pid().ff_upper();
+                }
+                
+            }
+        }
+    
+    get_rate_roll_pid()._ffec_adapt = get_rate_roll_pid().ffec();
+
+    if(Grouding==true)
+    {    
+        get_rate_pitch_pid()._dg_en = false;
+        get_rate_roll_pid()._dg_en = false;
+        //enable d gain scale for both pitch&roll rate controller
+        //to decide whether to use D scale depends on attitude
+        if(abs(_ahrs.pitch_sensor)<=int((get_rate_pitch_pid().ar())*100))
+        {
+            get_rate_pitch_pid()._dg_en = true;
+        }
+
+        if(abs(_ahrs.roll_sensor)<=int((get_rate_roll_pid().ar())*100))
+        {
+            get_rate_roll_pid()._dg_en = true;
+        }
+        //printf("%f\n",get_rate_pitch_pid()._ffec_adapt);
+    }
+
+    else
+    {
+        get_rate_pitch_pid()._ffec_adapt *= get_rate_pitch_pid().flyk();
+        get_rate_roll_pid()._ffec_adapt *= get_rate_roll_pid().flyk();
+
+        get_rate_pitch_pid()._dg_en=false;
+        get_rate_roll_pid()._dg_en=false;
+        
+    }
+    
+    //printf("upper limit: %f\n",get_rate_pitch_pid()._ff_upperlimit);
     _motors.set_roll(get_rate_roll_pid().update_all(_ang_vel_body.x, gyro_latest.x,  _dt, _motors.limit.roll, _pd_scale.x) + _actuator_sysid.x);
     _motors.set_roll_ff(get_rate_roll_pid().get_ff());
 
